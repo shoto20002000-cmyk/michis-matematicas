@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %}Dashboard – Michis Matemáticas{% endblock %}
+
+{% block content %}
+<section class="dash-section">
+  <div class="dash-header">
+    <h1 class="dash-title">📊 Panel de Estadísticas</h1>
+    <p class="dash-sub">Hola, <strong>{{ user.avatar }} {{ user.username }}</strong> — ¡aquí está tu progreso!</p>
+  </div>
+
+  <div class="dash-grid">
+
+    <!-- User card -->
+    <div class="dash-card user-card">
+      <div class="user-avatar">{{ user.avatar }}</div>
+      <div class="user-name">{{ user.username }}</div>
+      <div class="user-email">{{ user.email }}</div>
+      <div class="user-stats-row">
+        <div class="u-stat">
+          <span class="u-stat-val">{{ user.total_games }}</span>
+          <span class="u-stat-label">Partidas</span>
+        </div>
+        <div class="u-stat">
+          <span class="u-stat-val">{{ user.total_score }}</span>
+          <span class="u-stat-label">Puntos totales</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Personal bests -->
+    <div class="dash-card">
+      <h2 class="card-title">🌟 Tus mejores partidas</h2>
+      {% if personal %}
+      <table class="score-table">
+        <thead>
+          <tr><th>#</th><th>Puntos</th><th>Modo</th><th>Dificultad</th><th>Fecha</th></tr>
+        </thead>
+        <tbody>
+          {% for s in personal %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td><strong>{{ s.score }}</strong></td>
+            <td>{{ s.mode }}</td>
+            <td>{{ s.difficulty }}</td>
+            <td>{{ s.date.strftime('%d/%m/%Y') }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <div class="empty-state">
+        <div class="empty-cat">🐱</div>
+        <p>¡Aún no tienes partidas guardadas!<br>
+          <a href="/#juego">Juega ahora</a> para aparecer aquí.</p>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Global leaderboard -->
+    <div class="dash-card full-width">
+      <h2 class="card-title">🏆 Ranking Global</h2>
+      {% if top_scores %}
+      <table class="score-table">
+        <thead>
+          <tr><th>Pos.</th><th>Jugador</th><th>Puntos</th><th>Dificultad</th><th>Fecha</th></tr>
+        </thead>
+        <tbody>
+          {% for s in top_scores %}
+          <tr class="{{ 'top-row' if loop.index <= 3 else '' }}">
+            <td>
+              {% if loop.index == 1 %}🥇
+              {% elif loop.index == 2 %}🥈
+              {% elif loop.index == 3 %}🥉
+              {% else %}{{ loop.index }}{% endif %}
+            </td>
+            <td>{{ s.get('avatar','🐾') }} {{ s.get('username','?') }}</td>
+            <td><strong>{{ s.score }}</strong></td>
+            <td>{{ s.get('difficulty','—') }}</td>
+            <td>{{ s.date.strftime('%d/%m/%Y') }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <div class="empty-state">
+        <div class="empty-cat">🏆</div>
+        <p>El ranking está vacío. ¡Sé el primero!</p>
+      </div>
+      {% endif %}
+    </div>
+
+  </div>
+</section>
+{% endblock %}

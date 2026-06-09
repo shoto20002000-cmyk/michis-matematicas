@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Iniciar Sesión – Michis Matemáticas{% endblock %}
+{% block content %}
+<section class="auth-section">
+  <div class="auth-card">
+    <div class="auth-cat">
+      <pre class="pixel-cat">  /\_/\  
+ ( ^.^ ) 
+  > ♪ <  
+ /|   |\ </pre>
+    </div>
+    <h1 class="auth-title">¡Bienvenido de vuelta!</h1>
+    <p class="auth-sub">Entra para guardar tus puntajes</p>
+
+    <div id="auth-error" class="auth-error hidden"></div>
+
+    <div class="form-group">
+      <label class="form-label">Usuario</label>
+      <input type="text" id="f-username" class="form-input" placeholder="tu_usuario" autocomplete="username">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Contraseña</label>
+      <input type="password" id="f-password" class="form-input" placeholder="••••••" autocomplete="current-password">
+    </div>
+
+    <button class="btn-play full-width" onclick="doLogin()">Entrar →</button>
+    <p class="auth-switch">¿No tienes cuenta? <a href="/register">Regístrate gratis</a></p>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+async function doLogin() {
+  const username = document.getElementById('f-username').value.trim();
+  const password = document.getElementById('f-password').value;
+  const err = document.getElementById('auth-error');
+  err.classList.add('hidden');
+  if (!username || !password) { showErr('Por favor completa todos los campos.'); return; }
+  const res = await fetch('/api/login', {
+    method: 'POST', headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ username, password })
+  });
+  const data = await res.json();
+  if (data.ok) { window.location.href = data.redirect; }
+  else { showErr(data.msg); }
+}
+function showErr(msg) {
+  const e = document.getElementById('auth-error');
+  e.textContent = msg; e.classList.remove('hidden');
+}
+document.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+</script>
+{% endblock %}

@@ -1,0 +1,206 @@
+{% extends "base.html" %}
+{% block title %}Michis Matemáticas – Aprende con tu Michi{% endblock %}
+
+{% block content %}
+
+<!-- ══════════════════════════════════════════════
+     HERO / INFO SECTION
+══════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-badge">🎓 Juego Educativo</div>
+      <h1 class="hero-title">¡Aprende<br><span class="highlight">Matemáticas</span><br>con tu Michi!</h1>
+      <p class="hero-desc">
+        Practica sumas, restas, multiplicaciones y divisiones
+        respondiendo preguntas junto a tu gato favorito. ¡Sube de nivel y bate récords!
+      </p>
+      <div class="hero-btns">
+        <a href="#juego" class="btn-big btn-primary">▶ Jugar Ahora</a>
+        {% if not user %}
+        <a href="/register" class="btn-big btn-outline">Crear cuenta gratis</a>
+        {% else %}
+        <a href="/dashboard" class="btn-big btn-outline">📊 Ver mi progreso</a>
+        {% endif %}
+      </div>
+    </div>
+    <div class="hero-cat">
+      <div class="cat-frame">
+        <pre class="pixel-cat hero-michi">  /\_/\  
+ ( ★.★ ) 
+  > ♫ <  
+ /|   |\ </pre>
+        <div class="cat-bubble">¡Hola! ¿Listo para aprender? 🐾</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     STATS BAND
+══════════════════════════════════════════════ -->
+<section class="stats-band">
+  <div class="stat-item">
+    <span class="stat-number">4</span>
+    <span class="stat-label">Operaciones</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-number">3</span>
+    <span class="stat-label">Niveles</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-number">2</span>
+    <span class="stat-label">Modos de juego</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-number">∞</span>
+    <span class="stat-label">Diversión</span>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     HOW TO PLAY
+══════════════════════════════════════════════ -->
+<section class="how-section">
+  <h2 class="section-title">¿Cómo se juega?</h2>
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-icon">🎮</div>
+      <h3>Elige tu modo</h3>
+      <p>Modo <strong>Práctica</strong> sin presión, o <strong>Contrarreloj</strong> para ponerte a prueba.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-icon">🔢</div>
+      <h3>Responde preguntas</h3>
+      <p>Selecciona la respuesta correcta. ¡Cada acierto suma puntos y tu michi celebra!</p>
+    </div>
+    <div class="step-card">
+      <div class="step-icon">🔥</div>
+      <h3>Construye racha</h3>
+      <p>Las respuestas seguidas dan puntos extra. ¡3 en raya y tu michi baila!</p>
+    </div>
+    <div class="step-card">
+      <div class="step-icon">🏆</div>
+      <h3>Sube al ranking</h3>
+      <p>Regístrate y guarda tus puntajes para competir con otros estudiantes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     GAME SECTION
+══════════════════════════════════════════════ -->
+<section class="game-section" id="juego">
+  <div class="game-section-header">
+    <h2 class="section-title">¡A Jugar!</h2>
+    <p class="section-sub">Configura tu partida y empieza a aprender</p>
+  </div>
+
+  <div class="game-wrapper">
+    <!-- ── MENU PANEL ── -->
+    <div class="game-panel" id="panel-menu">
+      <div class="panel-cat">
+        <pre class="pixel-cat" id="menu-cat">  /\_/\  
+ ( o.o ) 
+  > ^ <  
+ /|   |\ </pre>
+      </div>
+
+      <div class="config-block">
+        <label class="config-label">Modo de juego</label>
+        <div class="toggle-group" id="group-mode">
+          <button class="toggle-btn active" data-val="practice">🐾 Práctica</button>
+          <button class="toggle-btn" data-val="timed">⏱ Contrarreloj</button>
+        </div>
+      </div>
+
+      <div class="config-block">
+        <label class="config-label">Operación</label>
+        <div class="toggle-group" id="group-op">
+          <button class="toggle-btn active" data-val="suma">+</button>
+          <button class="toggle-btn" data-val="resta">−</button>
+          <button class="toggle-btn" data-val="multi">×</button>
+          <button class="toggle-btn" data-val="div">÷</button>
+          <button class="toggle-btn" data-val="mixed">MIX</button>
+        </div>
+      </div>
+
+      <div class="config-block">
+        <label class="config-label">Dificultad</label>
+        <div class="toggle-group" id="group-dif">
+          <button class="toggle-btn active" data-val="easy">😊 Fácil</button>
+          <button class="toggle-btn" data-val="medium">😤 Media</button>
+          <button class="toggle-btn" data-val="hard">🔥 Difícil</button>
+        </div>
+      </div>
+
+      <button class="btn-play" id="btn-start">▶ ¡Iniciar Partida!</button>
+
+      <div class="hs-line">
+        🏆 Récord local: <span id="local-hs">0</span> pts
+      </div>
+    </div>
+
+    <!-- ── GAME PANEL ── -->
+    <div class="game-panel hidden" id="panel-game">
+      <div class="game-hud">
+        <div class="hud-item">
+          <span class="hud-label">Puntos</span>
+          <span class="hud-val" id="g-score">0</span>
+        </div>
+        <div class="hud-item" id="hud-timer-wrap">
+          <span class="hud-label">Tiempo</span>
+          <span class="hud-val" id="g-timer">30</span>
+        </div>
+        <div class="hud-item">
+          <span class="hud-label">Vidas</span>
+          <span class="hud-val" id="g-lives">❤️❤️❤️</span>
+        </div>
+        <div class="hud-item">
+          <span class="hud-label">Racha</span>
+          <span class="hud-val" id="g-streak">0🔥</span>
+        </div>
+      </div>
+
+      <div class="question-card" id="question-card">
+        <div class="q-label">¿Cuánto es?</div>
+        <div class="q-text" id="q-text">2 + 2</div>
+      </div>
+
+      <div class="michi-area">
+        <pre class="pixel-cat" id="game-cat">  /\_/\  
+ ( o_O ) 
+  > ? <  
+ /|   |\ </pre>
+        <div class="cat-speech" id="cat-speech"></div>
+      </div>
+
+      <div class="options-grid" id="options-grid"></div>
+      <div class="feedback-flash" id="feedback-flash"></div>
+    </div>
+
+    <!-- ── RESULT PANEL ── -->
+    <div class="game-panel hidden" id="panel-result">
+      <div class="result-cat">
+        <pre class="pixel-cat" id="result-cat">  /\_/\  
+ ( ★.★ ) 
+  > ♫ <  
+ /|   |\ </pre>
+      </div>
+      <h3 class="result-title" id="result-title">¡Partida terminada!</h3>
+      <div class="result-score-big" id="result-score">0</div>
+      <div class="result-pts">puntos</div>
+      <div class="result-stats" id="result-stats"></div>
+      <div class="result-btns">
+        <button class="btn-play" id="btn-replay">▶ Otra vez</button>
+        <button class="btn-outline-sm" id="btn-menu-back">🏠 Menú</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/game.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Michis Matemáticas{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="/" class="nav-logo">🐱 Michis Matemáticas</a>
+    <div class="nav-links">
+      <a href="/" class="nav-link">Inicio</a>
+      <a href="/dashboard" class="nav-link">Ranking</a>
+      {% if user %}
+        <span class="nav-user">{{ user.avatar }} {{ user.username }}</span>
+        <button class="btn-nav btn-outline" onclick="logout()">Salir</button>
+      {% else %}
+        <a href="/login" class="btn-nav btn-outline">Entrar</a>
+        <a href="/register" class="btn-nav btn-primary">Registrarse</a>
+      {% endif %}
+    </div>
+  </nav>
+
+  {% block content %}{% endblock %}
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-logo">🐱 Michis Matemáticas</div>
+      <p class="footer-sub">Proyecto educativo 2026 · Hecho con 💛 para aprender jugando</p>
+      <p class="footer-copy">© 2026 Michis Matemáticas. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>
